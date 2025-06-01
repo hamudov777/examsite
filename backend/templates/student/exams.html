@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Экзамены и тесты{% endblock %}
+{% block content %}
+<h2 style="font-size:2rem;margin-bottom:1.5rem;text-align:center;">Экзамены и тесты</h2>
+
+<!-- Поиск по названию -->
+<div style="display:flex;justify-content:center;margin-bottom:1.5rem;">
+  <input id="search-input" type="text" placeholder="Поиск по названию..." style="width:100%;max-width:340px;padding:0.7rem 1rem;border-radius:8px;border:1.5px solid #c9d5e7;">
+</div>
+
+<!-- Кнопки переключения -->
+<div style="display:flex;gap:1.2rem;justify-content:center;margin-bottom:1.5rem;">
+  <button id="btn-exams" class="btn active" style="font-size:1.08rem;">Доступные экзамены</button>
+  <button id="btn-tests" class="btn btn-secondary" style="font-size:1.08rem;">Доступные тесты</button>
+</div>
+
+<!-- Экзамены -->
+<div id="exams-list" style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:flex-start;">
+  {% for exam in exams %}
+    <div class="exam-card" data-title="{{ exam.title|lower }}">
+      <div class="card-title">{{ exam.title }}</div>
+      {% if exam.date %}
+        <div class="card-sub">Дата: {{ exam.date.strftime('%d.%m.%Y') }}</div>
+      {% endif %}
+      <div style="margin-bottom:1.2rem;">{{ exam.description or '' }}</div>
+      <a class="btn btn-primary btn-go" href="{{ url_for('student.exam_start', exam_id=exam.id) }}">Пройти экзамен</a>
+    </div>
+  {% else %}
+    <div style="margin:2rem auto;text-align:center;flex:1;">Нет доступных экзаменов.</div>
+  {% endfor %}
+</div>
+
+<!-- Тесты -->
+<div id="tests-list" style="display:none;flex-wrap:wrap;gap:2rem;justify-content:flex-start;">
+  {% for quiz in quizzes %}
+    <div class="exam-card" data-title="{{ quiz.title|lower }}">
+      <div class="card-title">{{ quiz.title }}</div>
+      {% if quiz.date %}
+        <div class="card-sub">Дата: {{ quiz.date.strftime('%d.%m.%Y') }}</div>
+      {% endif %}
+      <div style="margin-bottom:1.2rem;">{{ quiz.description or '' }}</div>
+      <a class="btn btn-success btn-go" href="{{ url_for('student.test_start', quiz_id=quiz.id) }}">Пройти тест</a>
+    </div>
+  {% else %}
+    <div style="margin:2rem auto;text-align:center;flex:1;">Нет доступных тестов.</div>
+  {% endfor %}
+</div>
+
+<style>
+.exam-card, .test-card {
+  flex: 1 1 260px;
+  min-width: 240px;
+  max-width: 320px;
+  background: var(--card);
+  color: var(--text);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px #1976d217;
+  padding: 1.6rem 1.2rem 1.5rem 1.2rem;
+  margin-bottom: 0.5rem;
+  transition: box-shadow 0.2s, transform 0.2s, z-index 0.2s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.exam-card:hover, .test-card:hover {
+  box-shadow: 0 8px 40px #1976d229;
+  transform: scale(1.05);
+  z-index: 2;
+}
+.btn-go {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.exam-card:hover .btn-go, .test-card:hover .btn-go {
+  opacity: 1;
+  pointer-events: all;
+}
+.card-title {
+  font-size: 1.15rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+.card-sub {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-size: 1.01rem;
+}
+@media (max-width: 800px) {
+  .exam-card, .test-card { min-width: 90vw; max-width: 99vw; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const examsBtn = document.getElementById('btn-exams');
+  const testsBtn = document.getElementById('btn-tests');
+  const examsList = document.getElementById('exams-list');
+  const testsList = document.getElementById('tests-list');
+  const searchInput = document.getElementById('search-input');
+
+  examsBtn.onclick = function() {
+    examsBtn.classList.add('active');
+    testsBtn.classList.remove('active');
+    examsList.style.display = "flex";
+    testsList.style.display = "none";
+  };
+  testsBtn.onclick = function() {
+    testsBtn.classList.add('active');
+    examsBtn.classList.remove('active');
+    examsList.style.display = "none";
+    testsList.style.display = "flex";
+  };
+
+  searchInput.addEventListener('input', function() {
+    const value = this.value.trim().toLowerCase();
+    // Фильтруем экзамены
+    Array.from(examsList.getElementsByClassName('exam-card')).forEach(card => {
+      const title = card.getAttribute('data-title');
+      card.style.display = title.includes(value) ? '' : 'none';
+    });
+    // Фильтруем тесты
+    Array.from(testsList.getElementsByClassName('exam-card')).forEach(card => {
+      const title = card.getAttribute('data-title');
+      card.style.display = title.includes(value) ? '' : 'none';
+    });
+  });
+});
+</script>
+{% endblock %}

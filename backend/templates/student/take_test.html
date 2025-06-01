@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container exam-container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-12">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="exam-header d-flex justify-content-between align-items-center rounded-top-4">
+          <div>
+            <h4 class="mb-0 fw-bold">
+              <span class="material-icons align-middle" style="font-size:1.4em;">quiz</span>
+              Тест: {{ quiz.title }}
+            </h4>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="material-icons timer-icon" style="font-size:1.7em;">schedule</span>
+            <span id="exam-timer" class="fw-bold fs-5 timer-text"></span>
+          </div>
+        </div>
+        <div class="card-body px-4 py-4">
+          <div class="mb-2 text-end">
+            <span class="exam-badge fs-6 shadow-sm px-3 py-2">
+              Вопрос <b>{{ current }}</b> из <b>{{ total }}</b>
+            </span>
+          </div>
+          <div class="mb-4">
+            <p class="fs-4 fw-semibold mb-4 text-center exam-question">
+              {{ question.question }}
+            </p>
+          </div>
+          <form id="exam-form" method="post">
+            <div class="list-group exam-answers mb-4">
+              {% for answer in answers %}
+                <label class="list-group-item exam-radio border-0 mb-2 shadow-sm rounded-3">
+                  <input class="form-check-input me-2" type="radio" name="answer" value="{{ loop.index0 }}" required>
+                  <span class="fs-5">{{ answer.text }}</span>
+                </label>
+              {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-gradient w-100 py-2 fs-5 fw-bold shadow-sm">Ответить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+  startExamTimer(20 * 60, 'exam-timer');
+</script>
+{% endblock %}

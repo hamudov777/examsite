@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Профиль{% endblock %}
+{% block content %}
+<div style="display:flex;flex-wrap:wrap;gap:2.5rem;align-items:flex-start;justify-content:center;">
+  <!-- Левая панель: Информация о пользователе -->
+  <section class="card" style="flex:0 1 340px;min-width:260px;max-width:380px;padding:2rem 1.7rem;">
+    <div style="display:flex;align-items:center;gap:1.2rem;">
+      <div style="font-size:2.9rem;background:var(--accent);color:#fff;border-radius:50%;width:64px;height:64px;display:flex;align-items:center;justify-content:center;">
+        <span class="material-icons">person</span>
+      </div>
+      <div>
+        <div style="font-size:1.45rem;font-weight:600;">{{ current_user.username }}</div>
+        <div style="margin-top:0.4rem;font-size:0.97rem;">
+          Статус: <b>{{ current_user.role or "Ученик" }}</b>
+        </div>
+      </div>
+    </div>
+    <hr style="margin:1.3rem 0;">
+    <div style="font-size:1rem;line-height:1.5;color:#444;">
+      <b>Дата регистрации:</b> {{ current_user.registered_at.strftime('%d.%m.%Y') if current_user.registered_at else "—" }}<br>
+      <b>Всего экзаменов:</b> {{ stats.total_exams }}<br>
+      <b>Всего тестов:</b> {{ stats.total_tests }}<br>
+      <b>Средний балл (экзамены):</b> <span style="color:var(--accent)">{{ stats.avg_exam_score }}</span><br>
+      <b>Средний балл (тесты):</b> <span style="color:var(--accent)">{{ stats.avg_test_score }}</span>
+    </div>
+    <hr style="margin:1.3rem 0;">
+    <a href="{{ url_for('auth.logout') }}" class="btn" style="width:100%;">Выйти из аккаунта</a>
+  </section>
+
+  <!-- Правая панель: История -->
+  <section style="flex:1 1 460px;min-width:300px;">
+    <div style="display:flex;gap:1rem;justify-content:space-between;align-items:center;margin-bottom:1.2rem;">
+      <h2 style="margin:0;font-size:1.35rem;">История</h2>
+    </div>
+    <div id="history-list" style="display:flex;flex-direction:column;gap:1.2rem;">
+      {% if passed_exams or passed_tests %}
+        {% for x in passed_exams %}
+          <div class="history-card">
+            <div class="history-info">
+              <div class="history-date">{{ x.date.strftime('%d.%m.%Y') }}</div>
+              <div class="history-title">{{ x.title }}</div>
+              <div class="history-sub">Экзамен</div>
+            </div>
+            <div class="history-score">{{ x.score }}</div>
+          </div>
+        {% endfor %}
+        {% for x in passed_tests %}
+          <div class="history-card">
+            <div class="history-info">
+              <div class="history-date">{{ x.date.strftime('%d.%m.%Y') }}</div>
+              <div class="history-title">{{ x.title }}</div>
+              <div class="history-sub">Тест</div>
+            </div>
+            <div class="history-score">{{ x.score }}</div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div id="history-empty" style="text-align:center;color:#888;margin-top:2rem;">Нет записей.</div>
+      {% endif %}
+    </div>
+    <hr style="margin:2rem 0 1rem 0;">
+    <h3 style="margin:0 0 0.7rem 0;font-size:1.13rem;">Cредний балл по экзаменам и тестам</h3>
+    <div>
+      <div class="avg-card"><b>Экзамены</b>: <span style="color:var(--accent)">{{ stats.avg_exam_score }}</span></div>
+      <div class="avg-card"><b>Тесты</b>: <span style="color:var(--accent)">{{ stats.avg_test_score }}</span></div>
+    </div>
+  </section>
+</div>
+
+<style>
+#history-list .history-card {
+  background: var(--card);
+  border-radius: 15px;
+  box-shadow: 0 2px 14px #1976d216;
+  padding: 1.1rem 1.3rem 1.05rem 1.3rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.3rem;
+  justify-content: space-between;
+  transition: box-shadow 0.17s, background 0.2s, color 0.2s;
+  position: relative;
+  color: var(--text);
+}
+#history-list .history-card:hover {
+  box-shadow: 0 6px 24px #1976d22a;
+}
+.history-info {
+  flex: 3 1 220px;
+}
+.history-date {
+  color: #888;
+  font-size: 0.97rem;
+  margin-bottom: 0.3rem;
+}
+.history-title {
+  font-size: 1.11rem;
+  font-weight: 600;
+  margin-bottom: 0.12rem;
+}
+.history-sub {
+  font-size: 0.98rem;
+  color: var(--accent);
+  margin-bottom: 0.1rem;
+}
+.history-score {
+  font-size: 1.14rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 8px;
+  padding: 0.35em 0.95em;
+  margin-left: 1.2rem;
+  min-width: 55px;
+  text-align: center;
+}
+.avg-card {
+  background: var(--flash-bg, #f7fafd);
+  border-radius: 9px;
+  padding: 0.7em 1.3em;
+  font-size: 1.07rem;
+  color: #2360a2;
+  box-shadow: 0 1px 8px #1976d111;
+  display: inline-block;
+  margin-right: 1rem;
+  margin-bottom: 0.7rem;
+  transition: background 0.2s, color 0.2s;
+}
+html.dark .avg-card {
+  background: #263040;
+  color: #8ec0fb;
+}
+@media (max-width: 900px) {
+  .card, section { width: 100%!important; min-width: 0!important; max-width: 100%!important;}
+  .avg-card { font-size: 0.99rem;}
+}
+</style>
+{% endblock %}

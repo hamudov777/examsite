@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}История экзаменов{% endblock %}
+{% block content %}
+<h2>История пройденных экзаменов и тестов</h2>
+<div>
+  {% if passed_exams or passed_tests %}
+    {% for x in passed_exams %}
+      <div>
+        <b>{{ x.title }}</b> (Экзамен) — {{ x.score }}%, {{ x.date.strftime('%d.%m.%Y') }}
+      </div>
+    {% endfor %}
+    {% for x in passed_tests %}
+      <div>
+        <b>{{ x.title }}</b> (Тест) — {{ x.score }}%, {{ x.date.strftime('%d.%m.%Y') }}
+      </div>
+    {% endfor %}
+  {% else %}
+    <div>Нет записей</div>
+  {% endif %}
+</div>
+{% endblock %}

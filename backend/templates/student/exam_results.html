@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Результат экзамена</h3>
+    </div>
+    <div class="card-body text-center">
+      <h4 class="mb-3">{{ exam.title }}</h4>
+      <div class="mb-4">
+        <span class="display-4 fw-bold text-success">{{ score }}</span>
+        <span class="fs-4">из {{ total }}</span>
+        <div class="mt-2 text-muted">({{ percent }}%)</div>
+      </div>
+      <div class="progress mb-4" style="height: 30px;">
+        <div class="progress-bar bg-success" role="progressbar" style="width: {{ percent }}%;" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">{{ percent }}%</div>
+      </div>
+      <a href="{{ url_for('student.exams') }}" class="btn btn-outline-primary">Вернуться к экзаменам</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
