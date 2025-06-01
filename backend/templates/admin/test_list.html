@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Тесты — Admin{% endblock %}
+
+{% block content %}
+<h1 style="text-align:center;margin-top:0.5em;font-size:2rem;">Тесты</h1>
+<div style="margin-bottom:2rem;text-align:right;">
+  <a href="{{ url_for('admin.test_add') }}" class="btn btn-gradient">Добавить тест</a>
+</div>
+
+<div style="display:flex;justify-content:end;margin-bottom:1.5rem;">
+  <input id="search-input" type="text" placeholder="Поиск по названию..." style="width:100%;max-width:340px;padding:0.7rem 1rem;border-radius:8px;border:1.5px solid #c9d5e7;">
+</div>
+
+{% if quizzes %}
+<div id="tests-list" style="display:flex; flex-wrap: wrap; gap: 2rem; justify-content: flex-start;">
+  {% for quiz in quizzes %}
+    <div class="exam-card" data-title="{{ quiz.title|lower }}" style="flex:1 1 320px;min-width:260px;max-width:340px;">
+      <div class="card-title">{{ quiz.title }}</div>
+      {% if quiz.date %}
+        <div class="card-sub">Дата проведения: {{ quiz.date.strftime('%d.%m.%Y') }}</div>
+      {% endif %}
+      <div style="margin-bottom:1em;">{{ quiz.description }}</div>
+      <div class="button-group" style="margin-top:1rem;display:flex;gap:0.7em;">
+        <a href="{{ url_for('admin.test_edit', quiz_id=quiz.id) }}" class="btn" style="flex:1;">Редактировать</a>
+        <form method="post" action="{{ url_for('admin.test_delete', quiz_id=quiz.id) }}" style="display:inline;flex:1;" onsubmit="return confirm('Удалить тест?');">
+          <button type="submit" class="btn btn-danger" style="width:100%;">Удалить</button>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% else %}
+  <div style="color:#aaa;text-align:center;margin-top:2em;">Тесты не найдены.</div>
+{% endif %}
+{% endblock %}

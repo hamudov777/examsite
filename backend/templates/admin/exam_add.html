@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Добавить экзамен{% endblock %}
+{% block content %}
+<div class="card" style="max-width:700px;margin:2rem auto;">
+  <h2 style="margin-bottom:1em;">Добавить экзамен</h2>
+  <form method="post" id="exam-form" autocomplete="off">
+    <input name="title" placeholder="Название экзамена" class="input" required style="margin-bottom:1em;">
+    <textarea name="description" placeholder="Описание" class="input" style="margin-bottom:1em;"></textarea>
+    <input name="date" type="date" class="input" style="margin-bottom:1em;">
+    <hr style="margin:2em 0;">
+    <h3 style="margin-bottom:1em;">Вопросы</h3>
+    <div id="questions"></div>
+    <button type="button" class="btn btn-gradient" id="add-question-btn" style="margin:1em 0;">+ Добавить вопрос</button>
+    <hr style="margin:2em 0;">
+    <button type="submit" class="btn btn-gradient">Сохранить экзамен</button>
+    <a href="{{ url_for('admin.exams_list') }}" class="btn btn-secondary" style="margin-left:1em;">Назад</a>
+  </form>
+</div>
+<style>
+.question-block {
+  margin-bottom:2em;
+  padding:1em 1em 1.5em 1em;
+  border-radius:12px;
+  background:rgba(20,28,48,0.98);
+  box-shadow:0 2px 10px #0002;
+  border:1.5px solid #24304a;
+}
+.question-block label {
+  font-weight:500;
+}
+.answers-list {
+  margin:1.5em 0 0 0;
+  display:flex;
+  flex-direction:column;
+  gap:1em;
+}
+.answer-row {
+  display:flex;
+  align-items:center;
+  gap:1.1em;
+}
+.answer-input {
+  flex:1 1 60%;
+  max-width:450px;
+  min-width:120px;
+  padding:0.6em 1em;
+  border-radius:8px;
+  border:1.5px solid #374569;
+  background:#171e2e;
+  color:#fff;
+  font-size:1.06em;
+}
+.custom-radio {
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+  margin-right: 8px;
+}
+.custom-radio input[type="radio"] {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #4fc3f7;
+  border-radius: 50%;
+  outline: none;
+  background: #151a28;
+  transition: border 0.2s;
+  cursor:pointer;
+  position:relative;
+}
+.custom-radio input[type="radio"]:checked {
+  border: 7px solid #43e97b;
+}
+.custom-radio input[type="radio"]:hover {
+  border-color: #43e97b;
+}
+@media (max-width:620px) {
+  .answer-row { flex-direction: column; align-items: stretch;}
+  .answer-input { max-width:100%; }
+}
+</style>
+<script>
+let questionCount = 0;
+function addQuestion() {
+  questionCount++;
+  const qDiv = document.createElement('div');
+  qDiv.className = "question-block";
+  qDiv.innerHTML = `
+    <label>Вопрос ${questionCount}:<br>
+      <input name="questions[${questionCount}][text]" class="input" required style="margin:0.6em 0 1em 0;width:100%;" placeholder="Текст вопроса">
+    </label>
+    <div style="margin-top:1em;">
+      <b>Варианты ответа:</b>
+      <div class="answers-list">
+        ${[1,2,3,4].map(i=>`
+          <div class="answer-row">
+            <input 
+              name="questions[${questionCount}][answers][${i-1}]"
+              class="answer-input"
+              required
+              placeholder="Вариант ${i}">
+            <label class="custom-radio" title="Отметить как правильный">
+              <input type="radio" name="questions[${questionCount}][correct]" value="${i-1}" required>
+            </label>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <button type="button" class="btn btn-danger" style="margin-top:1.3em;" onclick="this.parentElement.remove();">Удалить вопрос</button>
+    <hr>
+  `;
+  document.getElementById('questions').appendChild(qDiv);
+}
+document.getElementById('add-question-btn').onclick = addQuestion;
+addQuestion();
+</script>
+{% endblock %}

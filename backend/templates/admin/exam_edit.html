@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Редактировать экзамен{% endblock %}
+{% block content %}
+<div class="card" style="max-width:700px;margin:2rem auto;">
+  <h2 style="margin-bottom:1em;">Редактировать экзамен</h2>
+  <form method="post" id="exam-form" autocomplete="off">
+    <input name="title" value="{{ exam.title }}" placeholder="Название экзамена" class="input" required style="margin-bottom:1em;">
+    <textarea name="description" class="input" style="margin-bottom:1em;">{{ exam.description }}</textarea>
+    <input name="date" type="date" value="{{ exam.date }}" class="input" style="margin-bottom:1em;">
+    <hr style="margin:2em 0;">
+    <h3 style="margin-bottom:1em;">Вопросы</h3>
+    <div id="questions"></div>
+    <button type="button" class="btn btn-gradient" id="add-question-btn" style="margin:1em 0;">+ Добавить вопрос</button>
+    <hr style="margin:2em 0;">
+    <button type="submit" class="btn btn-gradient">Сохранить экзамен</button>
+    <a href="{{ url_for('admin.exams_list') }}" class="btn btn-secondary" style="margin-left:1em;">Назад</a>
+  </form>
+</div>
+<script>
+// --- JS для заполнения вопросов при редактировании ---
+let questionCount = 0;
+function addQuestion(qdata) {
+  questionCount++;
+  let answersHTML = '';
+  for (let i = 0; i < 4; i++) {
+    let ansVal = qdata && qdata.answers[i] ? qdata.answers[i] : '';
+    let checked = qdata && qdata.correct == i ? 'checked' : '';
+    answersHTML += `
+      <div class="answer-row">
+        <input 
+          name="questions[${questionCount}][answers][${i}]"
+          class="answer-input"
+          required
+          placeholder="Вариант ${i+1}"
+          value="${ansVal.replace(/"/g, '&quot;')}"
+        >
+        <label class="custom-radio" title="Отметить как правильный">
+          <input type="radio" name="questions[${questionCount}][correct]" value="${i}" required ${checked}>
+        </label>
+      </div>
+    `;
+  }
+  const qDiv = document.createElement('div');
+  qDiv.className = "question-block";
+  qDiv.innerHTML = `
+    <label>Вопрос ${questionCount}:<br>
+      <input name="questions[${questionCount}][text]" class="input" required style="margin:0.6em 0 1em 0;width:100%;" placeholder="Текст вопроса" value="${qdata ? qdata.text.replace(/"/g, '&quot;') : ''}">
+    </label>
+    <div style="margin-top:1em;">
+      <b>Варианты ответа:</b>
+      <div class="answers-list">
+        ${answersHTML}
+      </div>
+    </div>
+    <button type="button" class="btn btn-danger" style="margin-top:1.3em;" onclick="this.parentElement.remove();">Удалить вопрос</button>
+    <hr>
+  `;
+  document.getElementById('questions').appendChild(qDiv);
+}
+document.getElementById('add-question-btn').onclick = () => addQuestion();
+{% if questions %}
+  {% for q in questions %}
+    addQuestion({{ q|tojson|safe }});
+  {% endfor %}
+{% else %}
+  addQuestion();
+{% endif %}
+</script>
+<!-- Стили такие же, как exam_add.html -->
+{% endblock %}
