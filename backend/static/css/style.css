@@ -1,0 +1,417 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+:root {
+  --bg: #f6f8fb;
+  --bg-dark: #21222c;
+  --accent: #1976d2;
+  --accent-hover: #1565c0;
+  --text: #232323;
+  --text-dark: #fafafa;
+  --card: #fff;
+  --card-dark: #282a36;
+  --border-radius: 18px;
+  --shadow: 0 2px 32px rgba(0,0,0,0.08);
+  --transition: all 0.2s cubic-bezier(.4,0,.2,1);
+  --radio-bg: #f8f9fa;
+  --radio-hover-bg: #e0f7fa;
+}
+
+/* Dark theme switcher: только переменные! */
+html.dark {
+  --bg: #181d23;
+  --text: #f2f6fa;
+  --card: #242a33;
+  --flash-bg: #2e3641;
+  --flash-text: #e3f2fd;
+  --radio-bg: #242a33;
+  --radio-hover-bg: #2e3641;
+}
+
+/* Логотип ExamSite слева в меню */
+.logo-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: var(--accent, #1976d2);
+  padding: 0.35em 1.1em 0.35em 0.8em;
+  background: rgba(25,118,210,0.08);
+  border-radius: 2em;
+  transition: background 0.14s, box-shadow 0.14s, color 0.14s;
+  box-shadow: 0 1px 6px 0 rgba(25,118,210,0.06);
+  letter-spacing: 0.5px;
+}
+.logo-btn:hover, .logo-btn:focus {
+  background: rgba(25,118,210,0.18);
+  color: #fff;
+  text-shadow: 0 1px 8px #1976d299;
+}
+.logo-btn .material-icons {
+  font-size: 2rem;
+  color: var(--accent, #1976d2);
+  margin-right: 0.2em;
+  transition: color 0.15s;
+}
+.logo-btn:hover .material-icons {
+  color: #fff;
+}
+.logo-text {
+  font-family: inherit;
+}
+
+/* Базовые стили */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+  max-width: 900px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* Универсальная адаптивная карточка */
+.card {
+  background: var(--card);
+  border-radius: 1.5rem !important;
+  box-shadow: 0 8px 32px 0 rgba(60,60,120,0.08);
+  padding: 2rem;
+  margin: 1rem auto;
+  transition: var(--transition);
+  color: var(--text);
+  max-width: 370px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-header {
+  border-radius: 1.5rem 1.5rem 0 0 !important;
+  font-size: 1.15rem;
+}
+
+.card-body {
+  padding: 1.5rem 2rem !important;
+}
+
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.48rem 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+  font-size: 0.98rem;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+.btn:hover {
+  background: var(--accent-hover);
+}
+
+.btn-gradient {
+  background: linear-gradient(90deg, #1976d2 0%, #4caf50 100%);
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  padding: 10px 0;
+  margin-top: 16px;
+  transition: background 0.2s, transform 0.1s;
+  box-shadow: 0 4px 16px 0 rgba(60,60,120,0.08);
+}
+.btn-gradient:hover, .btn-gradient:focus {
+  background: linear-gradient(90deg, #005cb2 0%, #388e3c 100%);
+  transform: translateY(-2px) scale(1.02);
+  color: #fff;
+}
+
+.header, .footer {
+  background: var(--card);
+  padding: 1.5rem 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  color: var(--text);
+}
+
+.navbar a {
+  color: var(--accent);
+  margin: 0 1.2rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Универсальные стили для input, select, textarea */
+input, select, textarea {
+  border: 2px solid #fff;
+  background: var(--card);
+  color: var(--text);
+  border-radius: 9px;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1.1rem;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.22s, box-shadow 0.18s;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px #1976d255;
+}
+
+/* В темной теме — белая обводка */
+html.dark input, html.dark select, html.dark textarea {
+  border: 2px solid #fff;
+  background: var(--card);
+  color: var(--text);
+}
+
+/* В светлой теме — чуть темнее для видимости */
+html:not(.dark) input, html:not(.dark) select, html:not(.dark) textarea {
+  border: 2px solid #bbb;
+}
+
+/* Если поле с ошибкой (например, класс .is-invalid) */
+input.is-invalid, select.is-invalid, textarea.is-invalid {
+  border-color: #ff5d5d !important;
+  box-shadow: 0 0 0 2px #ff5d5d33;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+}
+
+/* Responsive + TV/ultrawide support */
+@media (max-width: 1200px) {
+  main {
+    max-width: 98vw;
+    padding: 0 2vw;
+  }
+}
+@media (max-width: 900px) {
+  main, .card {
+    max-width: 99vw;
+    margin: 1.1rem 0.5vw;
+    padding: 1rem;
+  }
+  .card {
+    padding: 1.3rem 0.7rem;
+  }
+}
+
+/* Для мобильных */
+@media (max-width: 700px) {
+  main, .card {
+    max-width: 100vw;
+    margin: 0;
+    padding: 0.5em 0.1em;
+  }
+  .card {
+    padding: 1.1em 0.4em;
+  }
+  .button-group {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+  .card img {
+    max-width: 94vw;
+  }
+  h1, h2 {
+    font-size: 1.3em !important;
+  }
+  h1 span.material-icons, h2 span.material-icons {
+    font-size: 1.2em !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .card { max-width: 98vw; }
+  .card-body { padding: 1rem !important; }
+  .btn { font-size: 0.95rem; padding: 0.45rem 0.7rem; }
+}
+
+/* Для ультрашироких и ТВ */
+@media (min-width: 1800px) {
+  main {
+    max-width: 1400px;
+  }
+  .card {
+    max-width: 1100px;
+  }
+}
+
+/* Картинки всегда адаптивные */
+img, .card img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Для красивых карточек */
+.exam-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Индивидуальные карточки экзаменов и тестов */
+.exam-card, .test-card {
+  flex: 1 1 260px;
+  min-width: 240px;
+  max-width: 320px;
+  background: var(--card);
+  color: var(--text);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px #1976d217;
+  padding: 1.6rem 1.2rem 1.5rem 1.2rem;
+  margin-bottom: 0.5rem;
+  transition: box-shadow 0.2s, transform 0.2s, z-index 0.2s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.exam-card:hover, .test-card:hover {
+  box-shadow: 0 8px 40px #1976d229;
+  transform: scale(1.05);
+  z-index: 2;
+}
+.card-title {
+  font-size: 1.15rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+.card-sub {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-size: 1.01rem;
+}
+
+/* Радиокнопки и ответы */
+.exam-answers .exam-radio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  background: var(--radio-bg);
+  min-height: 44px;
+  margin-bottom: 12px;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  box-shadow: 0 0 0 transparent;
+}
+.exam-answers .exam-radio:last-child {
+  margin-bottom: 0;
+}
+.exam-answers .exam-radio:hover,
+.exam-answers .exam-radio:focus-within {
+  background: var(--radio-hover-bg);
+  box-shadow: 0 0 0 2px #1976d233;
+}
+.exam-answers input[type="radio"] {
+  accent-color: #1976d2;
+  width: 20px;
+  height: 20px;
+  margin: 0 10px 0 0;
+}
+.exam-answers input[type="radio"]:checked + span {
+  color: #1976d2;
+  font-weight: bold;
+}
+
+/* Flash сообщения */
+.flash-message {
+  background: var(--flash-bg, #e3f2fd);
+  color: var(--flash-text, #232323);
+  font-weight: 500;
+  border-radius: var(--border-radius);
+  margin: 1rem 0;
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  max-width: 370px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Для exam/take_exam и take_test */
+.exam-header {
+  background: var(--accent);
+  color: #fff;
+  padding: 1.3rem 2rem 1.3rem 2rem;
+  border-radius: 1.2rem 1.2rem 0 0;
+  font-size: 1.2rem;
+}
+html.dark .exam-header {
+  background: var(--accent-hover);
+  color: #f2f6fa;
+}
+.exam-badge {
+  background: var(--card);
+  color: var(--accent);
+  border-radius: 1rem;
+  font-weight: 600;
+  display: inline-block;
+}
+html.dark .exam-badge {
+  background: #263040;
+  color: #8ec0fb;
+}
+.exam-question {
+  color: var(--text);
+}
+.timer-icon, .timer-text {
+  color: #ffd600 !important;
+}
+
+.fs-4 {
+  font-size: 1.35rem !important;
+}
+
+.card .btn,
+.exam-card .btn,
+.test-card .btn {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: block;
+  margin: 0.7rem 0 0 0;
+  border-radius: 10px;
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+  /* Убирает лишние внутренние отступы, чтобы кнопка точно не вылезала */
+}
