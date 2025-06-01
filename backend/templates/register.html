@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+<div class="card" style="max-width:400px;margin:2rem auto;padding:2rem;">
+  <h2>Регистрация</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div>{{ form.username.label }} {{ form.username(class="form-control") }}</div>
+    <div>{{ form.password.label }} {{ form.password(class="form-control") }}</div>
+    <div>{{ form.confirm.label }} {{ form.confirm(class="form-control") }}</div>
+    <div>{{ form.submit(class="btn btn-primary") }}</div>
+  </form>
+  <div style="margin-top:1rem;">
+    <a href="{{ url_for('auth.login') }}">Уже есть аккаунт? Войти</a>
+  </div>
+</div>
+{% endblock %}
