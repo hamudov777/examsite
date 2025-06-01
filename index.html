@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Главная — ExamSite{% endblock %}
+{% block content %}
+
+<section class="card" style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+  <div style="flex:1 1 320px;min-width:220px;">
+    <h1 style="font-size:2.5rem;margin:0 0 1rem 0;">
+      <span class="material-icons" style="font-size:2.6rem;vertical-align:middle;color:var(--accent);">school</span>
+      Добро пожаловать на ExamSite!
+    </h1>
+    <p style="font-size:1.2rem;line-height:1.6;">
+      Онлайн-платформа для комфортного и честного прохождения экзаменов.<br>
+      Готовьтесь, сдавайте тесты, отслеживайте результаты — всё в одном месте!
+    </p>
+
+    {% if not current_user.is_authenticated %}
+    <div class="button-group" style="margin:2rem 0 1rem 0;display:flex;gap:0.7rem;justify-content:center;">
+      <a href="{{ url_for('auth.register') }}" class="btn" style="
+        font-size:0.95rem;
+        padding:0.45em 1.3em;
+        display:flex;
+        align-items:center;
+        gap:0.5em;
+        min-width:110px;
+        justify-content:center;
+      ">
+        <span class="material-icons" style="font-size:1.1em;vertical-align:middle;">person_add</span>
+        Регистрация
+      </a>
+      <a href="{{ url_for('auth.login') }}" class="btn" style="
+        background:#fff;
+        color:var(--accent);
+        border:1.5px solid var(--accent);
+        font-size:0.95rem;
+        padding:0.45em 1.3em;
+        display:flex;
+        align-items:center;
+        gap:0.5em;
+        min-width:90px;
+        justify-content:center;
+      ">
+        <span class="material-icons" style="font-size:1.1em;vertical-align:middle;">login</span>
+        Войти
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  <div style="flex:1 1 320px;min-width:220px;text-align:center;">
+    <img src="{{ url_for('static', filename='images/main-hero.png') }}" alt="Экзамен онлайн" style="max-width:320px;width:100%;filter:drop-shadow(0 4px 18px #1976d233);">
+  </div>
+</section>
+
+<section style="margin:2.5rem 0;">
+  <div class="card" style="display:flex;flex-wrap:wrap;gap:2rem;align-items:center;justify-content:space-between;">
+    <div style="flex:1 1 320px;min-width:220px;">
+      <h2 style="font-size:1.5rem;margin:0 0 1rem 0;display:flex;align-items:center;gap:8px;">
+        <span class="material-icons" style="color:var(--accent);">info</span> Как это работает
+      </h2>
+      <ol style="font-size:1.1rem;line-height:1.7;">
+        <li>Регистрируетесь на платформе.</li>
+        <li>Выбираете нужный экзамен из доступных.</li>
+        <li>Проходите тест — с таймером и автоматической проверкой.</li>
+        <li>Получаете результат и рекомендации.</li>
+      </ol>
+      <a href="{{ url_for('student.exams') }}" class="btn" style="margin-top:1rem;">
+        <span class="material-icons" style="vertical-align:middle;font-size:1.2em;">assignment</span> Попробовать
+      </a>
+    </div>
+    <div style="flex:1 1 320px;min-width:220px;">
+      <img src="{{ url_for('static', filename='images/how-it-works.png') }}" alt="Как это работает" style="max-width:300px;width:100%;filter:drop-shadow(0 4px 18px #1976d233);">
+    </div>
+  </div>
+</section>
+
+<section style="margin:2.5rem 0;">
+  <h2 style="text-align:center;font-size:1.5rem;margin-bottom:1.5rem;">
+    <span class="material-icons" style="color:var(--accent);vertical-align:middle;">star_rate</span> Наши преимущества
+  </h2>
+  <div style="display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;">
+    <div class="card" style="flex:1 1 200px;min-width:180px;text-align:center;">
+      <span class="material-icons" style="font-size:2.1rem;color:var(--accent);margin-bottom:0.5rem;">verified_user</span>
+      <b>Безопасность</b><br> Все экзамены проходят с таймером и защитой от мошенничества.
+    </div>
+    <div class="card" style="flex:1 1 200px;min-width:180px;text-align:center;">
+      <span class="material-icons" style="font-size:2.1rem;color:var(--accent);margin-bottom:0.5rem;">update</span>
+      <b>Мгновенные результаты</b><br> Получайте баллы и анализ сразу после сдачи теста.
+    </div>
+    <div class="card" style="flex:1 1 200px;min-width:180px;text-align:center;">
+      <span class="material-icons" style="font-size:2.1rem;color:var(--accent);margin-bottom:0.5rem;">devices</span>
+      <b>Адаптивность</b><br> Работает на смартфонах, планшетах и ПК.
+    </div>
+    <div class="card" style="flex:1 1 200px;min-width:180px;text-align:center;">
+      <span class="material-icons" style="font-size:2.1rem;color:var(--accent);margin-bottom:0.5rem;">help_outline</span>
+      <b>Поддержка</b><br> Мы всегда на связи для помощи и обратной связи!
+    </div>
+  </div>
+</section>
+{% endblock %}
