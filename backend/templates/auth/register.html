@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Регистрация — ExamSite{% endblock %}
+{% block content %}
+<section class="card" style="max-width:470px;margin:3rem auto 0 auto;padding:2.5rem 2rem;">
+  <h2 style="display:flex;align-items:center;gap:10px;font-size:1.6rem;margin-bottom:1.2rem;">
+    <span class="material-icons" style="color:var(--accent);font-size:2.2rem;">person_add</span>
+    Регистрация
+  </h2>
+  <form method="POST" action="{{ url_for('auth.register') }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group" style="margin-bottom:1.1rem;">
+      {{ form.username.label(class_="form-label") }}
+      {{ form.username(class_="form-input", placeholder="Имя пользователя") }}
+      {% for error in form.username.errors %}
+        <span class="form-error">{{ error }}</span>
+      {% endfor %}
+    </div>
+    <div class="form-group" style="margin-bottom:1.1rem;">
+      {{ form.password.label(class_="form-label") }}
+      {{ form.password(class_="form-input", placeholder="Пароль") }}
+      {% for error in form.password.errors %}
+        <span class="form-error">{{ error }}</span>
+      {% endfor %}
+    </div>
+    <div class="form-group" style="margin-bottom:1.4rem;">
+      {{ form.confirm.label(class_="form-label") }}
+      {{ form.confirm(class_="form-input", placeholder="Повторите пароль") }}
+      {% for error in form.confirm.errors %}
+        <span class="form-error">{{ error }}</span>
+      {% endfor %}
+    </div>
+    <button type="submit" class="btn" style="width:100%;font-size:1.1rem;">
+      <span class="material-icons" style="vertical-align:middle;font-size:1.2em;">person_add</span>
+      Зарегистрироваться
+    </button>
+    <div style="margin-top:1.2rem;text-align:center;font-size:1rem;">
+      Уже есть аккаунт? <a href="{{ url_for('auth.login') }}" style="color:var(--accent);">Войти</a>
+    </div>
+  </form>
+</section>
+{% endblock %}
